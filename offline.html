@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Offline - MOMY-KIDY</title>
+    <title>MOMY-KIDY | Offline</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -42,6 +42,10 @@
             font-family: 'Orbitron', monospace;
             font-size: 2rem;
             margin-bottom: 10px;
+            background: linear-gradient(135deg, #00f6ff, #b400ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
         p {
@@ -64,18 +68,39 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0, 246, 255, 0.3);
         }
+        
+        .home-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 15px 30px;
+            border-radius: 12px;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-left: 10px;
+        }
+        
+        .home-btn:hover {
+            background: rgba(0, 246, 255, 0.2);
+        }
     </style>
 </head>
 <body>
     <div class="offline-container">
         <div class="offline-icon">
-            <i class="fas fa-wifi"></i>
+            📡
         </div>
-        <h1>You're Offline</h1>
-        <p>Please check your internet connection<br>and try again</p>
-        <button class="retry-btn" onclick="location.reload()">
-            <i class="fas fa-sync-alt"></i> Try Again
-        </button>
+        <h1>Connection Issue</h1>
+        <p>Unable to connect to the server.<br>Please check your internet connection or try again later.</p>
+        <div>
+            <button class="retry-btn" onclick="location.reload()">
+                <i class="fas fa-sync-alt"></i> Try Again
+            </button>
+            <button class="home-btn" onclick="window.location.href='/dashboard'">
+                <i class="fas fa-home"></i> Go to Dashboard
+            </button>
+        </div>
     </div>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
