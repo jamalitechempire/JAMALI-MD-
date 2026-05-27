@@ -2,8 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔐 MOMY-KIDY BOT 🔐</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="MOMY-KIDY Pair">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icons/icon-192.png">
+<title>🔐 MOMY-KIDY BOT | Pair Device</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 
@@ -448,6 +454,131 @@ footer::before{
   background:linear-gradient(90deg,transparent,var(--cyan),transparent);
 }
 
+/* Install Banner */
+.install-banner{
+  position:fixed;
+  bottom:20px;
+  left:20px;
+  right:20px;
+  background:linear-gradient(135deg,rgba(0,246,255,0.2),rgba(180,0,255,0.2));
+  backdrop-filter:blur(20px);
+  border-radius:20px;
+  padding:15px;
+  text-align:center;
+  z-index:100;
+  border:1px solid rgba(0,246,255,0.3);
+  display:none;
+  animation:slideUp 0.5s ease;
+}
+
+@keyframes slideUp{
+  from{transform:translateY(100px);opacity:0}
+  to{transform:translateY(0);opacity:1}
+}
+
+.install-banner-content{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+
+.install-banner-text{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.install-banner-text i{
+  font-size:1.5rem;
+  color:var(--cyan);
+}
+
+.install-banner-text strong{
+  font-size:1rem;
+}
+
+.install-banner-text p{
+  font-size:0.7rem;
+  opacity:0.7;
+}
+
+.install-banner-buttons{
+  display:flex;
+  gap:10px;
+}
+
+.install-btn{
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  border:none;
+  padding:10px 20px;
+  border-radius:12px;
+  color:#fff;
+  font-weight:600;
+  cursor:pointer;
+  transition:all 0.3s;
+}
+
+.install-btn:hover{
+  transform:scale(1.05);
+}
+
+.later-btn{
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  padding:10px 15px;
+  border-radius:12px;
+  color:#fff;
+  cursor:pointer;
+}
+
+/* Toast */
+.toast{
+  position:fixed;
+  bottom:100px;
+  left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:rgba(0,0,0,0.9);
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(0,246,255,0.3);
+  border-radius:12px;
+  padding:12px 24px;
+  z-index:1000;
+  transition:transform 0.3s ease;
+  white-space:nowrap;
+  font-weight:500;
+}
+
+.toast.show{
+  transform:translateX(-50%) translateY(0);
+}
+
+.toast.success{border-color:#00ff88;color:#00ff88;}
+.toast.error{border-color:#ff4444;color:#ff4444;}
+.toast.info{border-color:#00f6ff;color:#00f6ff;}
+
+.back-btn{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.2);
+  padding:10px 20px;
+  border-radius:12px;
+  color:#fff;
+  text-decoration:none;
+  transition:all 0.3s;
+  z-index:100;
+  font-size:0.9rem;
+  backdrop-filter:blur(10px);
+}
+
+.back-btn:hover{
+  background:rgba(0,246,255,0.2);
+  transform:translateX(-5px);
+}
+
 ::-webkit-scrollbar{
   width:8px;
 }
@@ -475,6 +606,17 @@ footer::before{
     font-size:1.4rem;
     letter-spacing:4px;
   }
+  
+  .install-banner-content{
+    flex-direction:column;
+    text-align:center;
+  }
+  
+  .toast{
+    white-space:normal;
+    text-align:center;
+    max-width:90%;
+  }
 }
 
 .loading-dots{
@@ -497,28 +639,6 @@ footer::before{
   0%,100%{transform:translateY(0)}
   50%{transform:translateY(-10px)}
 }
-
-.copy-feedback{
-  position:fixed;
-  top:20px;
-  left:50%;
-  transform:translateX(-50%) translateY(-100px);
-  background:rgba(0,255,136,0.9);
-  color:#000;
-  padding:12px 24px;
-  border-radius:12px;
-  font-weight:600;
-  font-size:0.9rem;
-  opacity:0;
-  transition:all 0.3s ease;
-  z-index:100;
-  box-shadow:0 10px 30px rgba(0,255,136,0.3);
-}
-
-.copy-feedback.show{
-  transform:translateX(-50%) translateY(0);
-  opacity:1;
-}
 </style>
 </head>
 
@@ -538,7 +658,7 @@ footer::before{
 
 <audio id="bgMusic" src="https://files.catbox.moe/iwpfp2.mp3" loop></audio>
 
-<div class="copy-feedback" id="copyFeedback">📋 COPIED TO CLIPBOARD!</div>
+<a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Dashboard</a>
 
 <div class="container">
   <div class="premium-badge">⭐ Premium Pro Bot 2026</div>
@@ -551,7 +671,7 @@ footer::before{
   </div>
 
   <div class="input-wrapper">
-    <input id="number" value="255" placeholder="Enter number...">
+    <input id="number" value="255" placeholder="Enter number with country code...">
   </div>
 
   <button class="main-btn" id="generateBtn" onclick="getCode()">
@@ -561,27 +681,58 @@ footer::before{
   <div class="result-container" id="resultContainer" onclick="copyCode()">
     <div class="result-label">Generated Code</div>
     <div class="copy-hint">Click to Copy</div>
-    <div id="result"></div>
+    <div id="result">---</div>
   </div>
 
   <div class="controls">
-    <button onclick="toggleMusic()">⏯ Music</button>
-    <button onclick="toggleOverlay()">🌙 Overlay</button>
-    <button onclick="switchLang()">🌍 Lang</button>
+    <button onclick="toggleMusic()"><i class="fas fa-music"></i> Music</button>
+    <button onclick="toggleOverlay()"><i class="fas fa-moon"></i> Overlay</button>
+    <button onclick="window.location.href='dashboard.html'"><i class="fas fa-home"></i> Home</button>
   </div>
 
   <footer>♱♱♱♱♱ 𝐏𝐨𝐰𝐞𝐫𝐞𝐝 𝐛𝐲 𝐒𝐢𝐥𝐚 𝐓𝐞𝐜𝐡 ♱♱♱♱</footer>
 </div>
 
+<!-- Install App Banner -->
+<div id="installBanner" class="install-banner">
+  <div class="install-banner-content">
+    <div class="install-banner-text">
+      <i class="fas fa-download"></i>
+      <div>
+        <strong>Install MOMY-KIDY App</strong>
+        <p>Get faster access with our native app</p>
+      </div>
+    </div>
+    <div class="install-banner-buttons">
+      <button class="install-btn" onclick="installPWA()"><i class="fas fa-download"></i> Install</button>
+      <button class="later-btn" onclick="closeInstallBanner()">Later</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
 <script>
 let music=false, overlay=true, lang="EN";
 let currentCode = "";
 let isGenerating = false;
 
+// Toast notification
+function showToast(message, type = 'info') {
+    const toast = document.getElementById('toast');
+    toast.textContent = message;
+    toast.className = `toast ${type} show`;
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3000);
+}
+
 function toggleMusic(){
   const m=document.getElementById("bgMusic");
   music?m.pause():m.play();
   music=!music;
+  showToast(music ? 'Music Playing 🎵' : 'Music Paused ⏸️', 'info');
 }
 
 function toggleOverlay(){
@@ -590,12 +741,7 @@ function toggleOverlay(){
     overlay ? "rgba(0,0,0,.4)" : "rgba(0,0,0,.1)";
   document.getElementById("overlay").style.backdropFilter =
     overlay ? "blur(2px)" : "blur(0px)";
-}
-
-function switchLang(){
-  lang = lang==="EN"?"SW":"EN";
-  document.getElementById("statusText").innerText =
-    lang==="EN"?"SYSTEM STATUS : ONLINE":"HALI YA MFUMO : TAYARI";
+  showToast(overlay ? 'Overlay Enabled 🌙' : 'Overlay Disabled ☀️', 'info');
 }
 
 function setButtonLoading(loading){
@@ -619,37 +765,39 @@ function copyCode(){
   const resultDiv = document.getElementById("result");
   const code = resultDiv.innerText;
   
-  if(!code || code === "CONNECTING..." || code === "INVALID" || code === "FAILED" || code === "SERVER ERROR" || code.includes("loading") || isGenerating){
+  if(!code || code === "---" || code === "CONNECTING..." || code === "INVALID" || code === "FAILED" || code === "SERVER ERROR" || code.includes("loading") || isGenerating){
+    showToast('No code to copy! Generate a code first.', 'error');
     return;
   }
   
   navigator.clipboard.writeText(code).then(() => {
     resultDiv.classList.add("copied");
+    const originalText = resultDiv.innerText;
     resultDiv.innerText = "✓ COPIED!";
-    
-    const feedback = document.getElementById("copyFeedback");
-    feedback.classList.add("show");
     
     setTimeout(() => {
       resultDiv.classList.remove("copied");
-      resultDiv.innerText = code;
-      feedback.classList.remove("show");
+      resultDiv.innerText = originalText;
     }, 1500);
+    
+    showToast('Code copied to clipboard! 📋', 'success');
+  }).catch(() => {
+    showToast('Failed to copy code', 'error');
   });
 }
 
 async function getCode(){
   if(isGenerating) return;
   
-  const n=document.getElementById("number").value.replace(/\D/g,'');
+  let n=document.getElementById("number").value.replace(/\D/g,'');
   const r=document.getElementById("result");
 
-  if(!n){ 
+  if(!n || n.length < 9){ 
     r.innerHTML="INVALID"; 
+    showToast('Please enter a valid phone number with country code', 'error');
     return; 
   }
 
-  // Set button to loading state
   setButtonLoading(true);
   r.innerHTML='<div class="loading-dots"><span></span><span></span><span></span></div>';
 
@@ -659,15 +807,68 @@ async function getCode(){
     if(d.code){
       currentCode = d.code;
       r.innerHTML=d.code;
+      showToast(`✅ Pairing code generated for +${n}`, 'success');
+    }else if(d.status === 'already_connected'){
+      r.innerHTML="ALREADY CONNECTED";
+      showToast(`Bot for +${n} is already connected!`, 'success');
     }else{
       r.innerHTML="FAILED";
+      showToast(d.error || 'Failed to generate code', 'error');
     }
-  }catch{ 
+  }catch(e){ 
     r.innerHTML="SERVER ERROR"; 
+    showToast('Server error. Please try again later.', 'error');
   } finally {
-    // Reset button state
     setButtonLoading(false);
   }
+}
+
+// ==================== PWA INSTALLATION ====================
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBanner').style.display = 'block';
+    console.log('[PWA] Install prompt available');
+});
+
+function installPWA() {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+            if (choiceResult.outcome === 'accepted') {
+                showToast('App installed successfully! 🎉', 'success');
+            } else {
+                showToast('Installation cancelled', 'info');
+            }
+            deferredPrompt = null;
+            document.getElementById('installBanner').style.display = 'none';
+        });
+    } else {
+        showToast('Install prompt not available. Use browser menu to install.', 'info');
+    }
+}
+
+function closeInstallBanner() {
+    document.getElementById('installBanner').style.display = 'none';
+}
+
+// Check if already installed
+window.addEventListener('appinstalled', (evt) => {
+    console.log('[PWA] App was installed');
+    showToast('Thank you for installing MOMY-KIDY Bot! 🚀', 'success');
+});
+
+// Register Service Worker
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').then((registration) => {
+            console.log('[PWA] Service Worker registered with scope:', registration.scope);
+        }).catch((error) => {
+            console.log('[PWA] Service Worker registration failed:', error);
+        });
+    });
 }
 </script>
 
