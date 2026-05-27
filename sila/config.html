@@ -170,6 +170,29 @@
             background: rgba(0, 246, 255, 0.2);
         }
 
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 246, 255, 0.3);
+            border-radius: 12px;
+            padding: 12px 24px;
+            z-index: 1000;
+            transition: transform 0.3s ease;
+            font-weight: 500;
+        }
+
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .toast.success { border-color: #00ff88; color: #00ff88; }
+        .toast.error { border-color: #ff4444; color: #ff4444; }
+        .toast.info { border-color: #00f6ff; color: #00f6ff; }
+
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -177,17 +200,24 @@
             .config-card {
                 padding: 20px;
             }
+            .button-group {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .btn-secondary {
+                margin-left: 0;
+            }
         }
     </style>
 </head>
 <body>
 
-<a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+<a href="/dashboard" class="back-btn"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
 
 <div class="container">
     <div class="header">
         <h1><i class="fas fa-sliders-h"></i> Bot Configuration</h1>
-        <p style="opacity: 0.7; margin-top: 10px;">Customize your bot settings</p>
+        <p style="opacity: 0.7; margin-top: 10px;" id="botNumberDisplay">Loading bot number...</p>
     </div>
 
     <div class="premium-banner">
@@ -200,7 +230,7 @@
         
         <div class="config-group">
             <label>Bot Number <i class="fas fa-mobile-alt"></i></label>
-            <input type="text" id="botNumber" placeholder="Enter WhatsApp number" value="255789661031">
+            <input type="text" id="botNumber" placeholder="Enter WhatsApp number" readonly disabled>
             <small>The WhatsApp number connected to this bot</small>
         </div>
 
@@ -281,29 +311,64 @@
     </div>
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
-    // Get number from URL or use default
     const urlParams = new URLSearchParams(window.location.search);
-    const botNumber = urlParams.get('number') || 'default';
+    const botNumber = urlParams.get('number') || '';
+
+    const botNumberDisplay = document.getElementById('botNumberDisplay');
+    const botNumberInput = document.getElementById('botNumber');
+
+    if(botNumber) {
+        botNumberDisplay.innerHTML = `<i class="fas fa-robot"></i> Configuring bot: <strong>${botNumber}</strong>`;
+        botNumberInput.value = botNumber;
+    } else {
+        botNumberDisplay.innerHTML = '<i class="fas fa-exclamation-triangle"></i> No bot selected! Go back to dashboard and select a bot.';
+        botNumberDisplay.style.color = '#ff4444';
+    }
+
+    function showToast(message, type = 'info') {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.className = `toast ${type} show`;
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
+    }
 
     async function loadConfig() {
+        if(!botNumber) {
+            showToast('No bot number specified! Go back to dashboard and select a bot.', 'error');
+            return;
+        }
+        
         try {
-            const res = await fetch(`/api/config?number=${botNumber}`);
-            if(res.ok) {
-                const config = await res.json();
-                document.getElementById('autoViewStatus').value = config.AUTO_VIEW_STATUS || 'true';
-                document.getElementById('autoLikeStatus').value = config.AUTO_LIKE_STATUS || 'true';
-                document.getElementById('autoReply').value = config.AUTO_REPLY_ENABLE || 'true';
-                document.getElementById('antiCall').value = config.ANTI_CALL || 'false';
-                document.getElementById('antiDelete').value = config.ANTI_DELETE || 'false';
-                document.getElementById('botPrefix').value = config.PREFIX || '.';
-            }
+            showToast('Loading config...', 'info');
+            const res = await fetch(`/api/config?number=${encodeURIComponent(botNumber)}`);
+            if(!res.ok) throw new Error('Failed to load config');
+            const config = await res.json();
+            
+            document.getElementById('autoViewStatus').value = config.AUTO_VIEW_STATUS || 'true';
+            document.getElementById('autoLikeStatus').value = config.AUTO_LIKE_STATUS || 'true';
+            document.getElementById('autoReply').value = config.AUTO_REPLY_ENABLE || 'true';
+            document.getElementById('antiCall').value = config.ANTI_CALL || 'false';
+            document.getElementById('antiDelete').value = config.ANTI_DELETE || 'false';
+            document.getElementById('botPrefix').value = config.PREFIX || '.';
+            
+            showToast('Config loaded successfully!', 'success');
         } catch(e) {
             console.error('Error loading config:', e);
+            showToast('Error loading config: ' + e.message, 'error');
         }
     }
 
     async function saveConfig() {
+        if(!botNumber) {
+            showToast('No bot number specified!', 'error');
+            return;
+        }
+        
         const config = {
             AUTO_VIEW_STATUS: document.getElementById('autoViewStatus').value,
             AUTO_LIKE_STATUS: document.getElementById('autoLikeStatus').value,
@@ -314,20 +379,22 @@
         };
 
         try {
-            const res = await fetch(`/api/config/update?number=${botNumber}&config=${JSON.stringify(config)}`);
+            showToast('Saving config...', 'info');
+            const res = await fetch(`/update-config?number=${encodeURIComponent(botNumber)}&config=${encodeURIComponent(JSON.stringify(config))}`);
             const data = await res.json();
+            
             if(data.status === 'otp_sent') {
                 const otp = prompt('OTP sent to your WhatsApp! Enter the 6-digit code:');
                 if(otp) {
-                    const verifyRes = await fetch(`/verify-otp?number=${botNumber}&otp=${otp}`);
+                    const verifyRes = await fetch(`/verify-otp?number=${encodeURIComponent(botNumber)}&otp=${otp}`);
                     const verifyData = await verifyRes.json();
-                    alert(verifyData.message || 'Config updated successfully!');
+                    showToast(verifyData.message || 'Config updated successfully!', 'success');
                 }
             } else {
-                alert('Config updated successfully!');
+                showToast('Config updated successfully!', 'success');
             }
         } catch(e) {
-            alert('Error saving config: ' + e.message);
+            showToast('Error saving config: ' + e.message, 'error');
         }
     }
 
@@ -335,7 +402,9 @@
         window.open('https://wa.me/255789661031?text=HELLO%20SILA%20I%20WANT%20PREMIUM%20FEATURE%27S', '_blank');
     }
 
-    loadConfig();
+    if(botNumber) {
+        loadConfig();
+    }
 </script>
 
 </body>
