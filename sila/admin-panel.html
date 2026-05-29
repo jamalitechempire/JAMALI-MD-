@@ -2,9 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MOMY-KIDY | Admin Panel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>JAMALI MD | Admin Nexus</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         * {
@@ -14,148 +14,202 @@
         }
 
         body {
-            background: linear-gradient(135deg, #0a0a0a 0%, #0a0f1a 50%, #000428 100%);
+            background: radial-gradient(circle at 10% 20%, #0a0f1e, #03050b);
             font-family: 'Inter', sans-serif;
             color: #fff;
             min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
         }
 
-        .container {
+        /* LOGIN CARD */
+        .login-container {
+            width: 100%;
+            max-width: 420px;
+        }
+        .glass-login {
+            background: rgba(12, 15, 30, 0.65);
+            backdrop-filter: blur(16px);
+            border-radius: 32px;
+            border: 1px solid rgba(0, 246, 255, 0.3);
+            padding: 2rem;
+            text-align: center;
+        }
+        .glass-login h2 {
+            background: linear-gradient(135deg, #00f6ff, #b400ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1.5rem;
+        }
+        .glass-login input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 246, 255, 0.3);
+            border-radius: 60px;
+            padding: 12px 20px;
+            color: #fff;
+            margin-bottom: 15px;
+            outline: none;
+        }
+        .glass-login button {
+            width: 100%;
+            background: linear-gradient(95deg, #00c6fb, #005bea);
+            border: none;
+            border-radius: 60px;
+            padding: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+            transition: 0.2s;
+        }
+        .glass-login button:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 15px #00c6fb;
+        }
+        .error-msg {
+            color: #ff6666;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* MAIN ADMIN PANEL (hidden initially) */
+        .admin-container {
+            display: none;
             max-width: 1400px;
+            width: 100%;
             margin: 0 auto;
             padding: 20px;
-            position: relative;
-            z-index: 2;
+        }
+
+        .glass-card {
+            background: rgba(12, 15, 30, 0.6);
+            backdrop-filter: blur(12px);
+            border-radius: 28px;
+            border: 1px solid rgba(0, 246, 255, 0.2);
+            padding: 24px;
+            margin-bottom: 25px;
         }
 
         .header {
-            background: rgba(10, 10, 20, 0.6);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(0, 246, 255, 0.2);
-            border-radius: 24px;
-            padding: 20px 30px;
-            margin-bottom: 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
         }
-
         .header h1 {
             font-family: 'Orbitron', monospace;
-            background: linear-gradient(135deg, #ff4444, #ff0000);
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, #00f6ff, #b400ff);
             -webkit-background-clip: text;
             background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+        .admin-badge {
+            background: rgba(0, 255, 136, 0.2);
+            padding: 6px 16px;
+            border-radius: 40px;
+            color: #0f0;
+            font-weight: 500;
+        }
 
-        .stats-panel {
+        .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
         .stat-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 24px;
             padding: 20px;
             text-align: center;
+            border: 1px solid rgba(0, 246, 255, 0.2);
+            transition: 0.2s;
         }
-
+        .stat-card:hover {
+            border-color: #00f6ff;
+        }
         .stat-number {
             font-size: 2.5rem;
             font-weight: 700;
             color: #00f6ff;
         }
 
-        .sessions-table-container {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 25px;
-            overflow-x: auto;
+        .global-actions {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 25px;
+        }
+        .global-btn {
+            background: linear-gradient(135deg, #00f6ff, #b400ff);
+            border: none;
+            border-radius: 40px;
+            padding: 10px 20px;
+            font-weight: 600;
+            color: #fff;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .global-btn.danger {
+            background: linear-gradient(135deg, #ff4444, #cc0000);
+        }
+        .global-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.05);
         }
 
+        .sessions-table {
+            overflow-x: auto;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
         }
-
         th, td {
-            padding: 15px;
+            padding: 14px;
             text-align: left;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         th {
             color: #00f6ff;
             font-weight: 600;
         }
-
+        .status-online {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            padding: 4px 12px;
+            border-radius: 40px;
+            display: inline-block;
+        }
         .action-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
-
         .action-btn {
-            padding: 8px 15px;
+            padding: 6px 12px;
             border: none;
-            border-radius: 8px;
+            border-radius: 30px;
             cursor: pointer;
-            transition: all 0.3s;
             font-weight: 600;
+            transition: 0.2s;
         }
-
         .btn-view { background: #00f6ff; color: #000; }
         .btn-reconnect { background: #00ff88; color: #000; }
         .btn-disconnect { background: #ff4444; color: #fff; }
-        .btn-delete { background: #ff0000; color: #fff; }
-
-        .action-btn:hover {
-            transform: translateY(-2px);
-            filter: brightness(1.1);
-        }
-
-        .global-actions {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-        }
-
-        .global-btn {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #00f6ff, #b400ff);
-            border: none;
-            border-radius: 12px;
-            color: #fff;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .global-btn.danger {
-            background: linear-gradient(135deg, #ff4444, #ff0000);
-        }
-
-        .global-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(0, 246, 255, 0.3);
-        }
 
         .settings-section {
-            margin-top: 30px;
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 24px;
-            padding: 25px;
+            margin-top: 20px;
         }
-
         .setting-item {
             display: flex;
             justify-content: space-between;
@@ -163,244 +217,274 @@
             padding: 15px 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
         }
-
         .setting-item:last-child {
             border-bottom: none;
         }
-
         .setting-item input {
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(0, 246, 255, 0.3);
-            padding: 10px 15px;
-            border-radius: 8px;
+            background: #05080f;
+            border: 1px solid #2a2f50;
+            border-radius: 40px;
+            padding: 8px 15px;
             color: #fff;
         }
 
-        .back-btn {
+        .toast {
             position: fixed;
-            top: 20px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            background: #111;
             padding: 10px 20px;
-            border-radius: 12px;
-            color: #fff;
-            text-decoration: none;
-            transition: all 0.3s;
-            z-index: 100;
+            border-radius: 40px;
+            transition: 0.3s;
+            z-index: 1000;
+            border-left: 4px solid #00f6ff;
+        }
+        .toast.show {
+            transform: translateX(-50%) translateY(0);
         }
 
-        .back-btn:hover {
-            background: rgba(0, 246, 255, 0.2);
-        }
-
-        @media (max-width: 768px) {
-            .global-actions {
-                flex-direction: column;
-            }
-            .action-buttons {
-                flex-wrap: wrap;
-            }
+        @media (max-width: 700px) {
+            .stats-grid { grid-template-columns: 1fr; }
+            .action-buttons { flex-direction: column; }
         }
     </style>
 </head>
 <body>
 
-<a href="dashboard.html" class="back-btn"><i class="fas fa-arrow-left"></i> Back</a>
-
-<div class="container">
-    <div class="header">
-        <h1><i class="fas fa-shield-alt"></i> ADMIN CONTROL PANEL</h1>
-        <div id="adminStatus" style="color: #00ff88;"><i class="fas fa-check-circle"></i> Admin Access: Granted</div>
+<!-- LOGIN FORM (shown first) -->
+<div id="loginScreen" class="login-container">
+    <div class="glass-login">
+        <h2><i class="fas fa-shield-alt"></i> ADMIN NEXUS</h2>
+        <input type="text" id="adminUsername" placeholder="Username" autocomplete="off">
+        <input type="password" id="adminPassword" placeholder="Password">
+        <button id="loginBtn">UNLOCK PANEL</button>
+        <div id="loginError" class="error-msg"></div>
     </div>
+</div>
 
-    <div class="stats-panel" id="statsPanel">
-        <div class="stat-card">
-            <div class="stat-number" id="totalSessions">0</div>
-            <div>Total Sessions</div>
+<!-- MAIN ADMIN DASHBOARD (hidden until login) -->
+<div id="adminDashboard" class="admin-container">
+    <div class="glass-card">
+        <div class="header">
+            <h1><i class="fas fa-microchip"></i> JAMALI MD • ADMIN NEXUS</h1>
+            <div class="admin-badge"><i class="fas fa-lock"></i> Secure Session</div>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" id="activeSessions">0</div>
-            <div>Active Now</div>
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card"><div class="stat-number" id="totalBots">0</div><div>Total Bots</div></div>
+            <div class="stat-card"><div class="stat-number" id="activeBots">0</div><div>Active Now</div></div>
+            <div class="stat-card"><div class="stat-number" id="visitors">0</div><div>Visitors</div></div>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" id="totalVisitors">0</div>
-            <div>Total Visitors</div>
+        <div class="global-actions">
+            <button class="global-btn" id="reconnectAllBtn"><i class="fas fa-sync-alt"></i> Reconnect All</button>
+            <button class="global-btn danger" id="disconnectAllBtn"><i class="fas fa-power-off"></i> Disconnect All</button>
+            <button class="global-btn" id="refreshSessionsBtn"><i class="fas fa-refresh"></i> Refresh List</button>
         </div>
-        <div class="stat-card">
-            <div class="stat-number" id="todayVisitors">0</div>
-            <div>Today's Visitors</div>
-        </div>
-    </div>
-
-    <div class="global-actions">
-        <button class="global-btn" onclick="reconnectAll()"><i class="fas fa-sync-alt"></i> Reconnect All Bots</button>
-        <button class="global-btn danger" onclick="disconnectAll()"><i class="fas fa-power-off"></i> Disconnect All Bots</button>
-        <button class="global-btn" onclick="refreshSessions()"><i class="fas fa-refresh"></i> Refresh List</button>
-    </div>
-
-    <div class="sessions-table-container">
-        <h3 style="margin-bottom: 20px;"><i class="fas fa-server"></i> All Bot Sessions</h3>
-        <table id="sessionsTable">
-            <thead>
-                <tr><th>Number</th><th>Status</th><th>Uptime</th><th>Messages</th><th>Commands</th><th>Actions</th></tr>
-            </thead>
-            <tbody id="sessionsBody">
-                <tr><td colspan="6" style="text-align: center;">Loading sessions...</td></tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="settings-section">
-        <h3 style="margin-bottom: 20px;"><i class="fas fa-lock"></i> Admin Settings</h3>
-        <div class="setting-item">
-            <span><i class="fas fa-key"></i> Change Admin PIN</span>
-            <div>
-                <input type="password" id="newPin" placeholder="New PIN" style="margin-right: 10px;">
-                <button class="global-btn" onclick="changeAdminPin()">Update PIN</button>
+        <div class="sessions-table">
+            <h3 style="margin-bottom: 15px;"><i class="fas fa-server"></i> Active Bot Sessions</h3>
+            <div style="overflow-x: auto;">
+                <table id="sessionsTable">
+                    <thead>
+                        <tr><th>Number</th><th>Status</th><th>Uptime</th><th>Messages</th><th>Commands</th><th>Actions</th></tr>
+                    </thead>
+                    <tbody id="sessionsBody">
+                        <tr><td colspan="6" style="text-align: center;">Loading sessions...</td></tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="setting-item">
-            <span><i class="fas fa-chart-line"></i> Visitor Analytics</span>
-            <button class="global-btn" onclick="viewAnalytics()">View Analytics</button>
-        </div>
-        <div class="setting-item">
-            <span><i class="fas fa-database"></i> Database Status</span>
-            <span id="dbStatus" style="color: #00ff88;">● Connected</span>
+        <div class="settings-section">
+            <h3><i class="fas fa-lock"></i> Admin Security</h3>
+            <div class="setting-item">
+                <span><i class="fas fa-key"></i> Change Admin Password</span>
+                <div>
+                    <input type="password" id="newPassword" placeholder="New password">
+                    <button class="global-btn" id="changePwdBtn" style="padding: 6px 15px;">Update</button>
+                </div>
+            </div>
+            <div class="setting-item">
+                <span><i class="fas fa-database"></i> Database Status</span>
+                <span style="color: #00ff88;">● MongoDB Connected</span>
+            </div>
         </div>
     </div>
 </div>
 
-<script>
-    let sessionsData = [];
+<div id="toastMsg" class="toast"></div>
 
-    async function refreshSessions() {
+<script>
+    // Hardcoded default credentials (can be changed via UI)
+    let ADMIN_CRED = {
+        username: "Jamalitz",
+        password: "JAMALITECH@@@1234"
+    };
+
+    // Load stored credentials from localStorage (if changed before)
+    function loadStoredCreds() {
+        const stored = localStorage.getItem('jamali_admin_creds');
+        if (stored) {
+            try {
+                const parsed = JSON.parse(stored);
+                if (parsed.username && parsed.password) ADMIN_CRED = parsed;
+            } catch(e) {}
+        }
+    }
+
+    function saveCreds() {
+        localStorage.setItem('jamali_admin_creds', JSON.stringify(ADMIN_CRED));
+    }
+
+    // Authentication state
+    let isAuthenticated = false;
+
+    // DOM elements
+    const loginScreen = document.getElementById('loginScreen');
+    const adminDash = document.getElementById('adminDashboard');
+    const toastDiv = document.getElementById('toastMsg');
+
+    function showToast(msg, type = 'info') {
+        toastDiv.innerText = msg;
+        toastDiv.style.borderLeftColor = type === 'error' ? '#ff4444' : '#00f6ff';
+        toastDiv.classList.add('show');
+        setTimeout(() => toastDiv.classList.remove('show'), 3000);
+    }
+
+    // Handle login
+    document.getElementById('loginBtn').onclick = () => {
+        const user = document.getElementById('adminUsername').value.trim();
+        const pass = document.getElementById('adminPassword').value.trim();
+        if (user === ADMIN_CRED.username && pass === ADMIN_CRED.password) {
+            isAuthenticated = true;
+            loginScreen.style.display = 'none';
+            adminDash.style.display = 'block';
+            loadDashboardData();
+            startAutoRefresh();
+        } else {
+            document.getElementById('loginError').innerText = 'Invalid credentials';
+        }
+    };
+
+    // Load all data (sessions, stats)
+    async function loadDashboardData() {
         try {
+            // Fetch active sessions
             const res = await fetch('/active');
             const data = await res.json();
-            
-            document.getElementById('totalSessions').innerText = data.count || 0;
-            document.getElementById('activeSessions').innerText = data.count || 0;
-            
+            const sessions = data.numbers || [];
+            document.getElementById('totalBots').innerText = sessions.length;
+            document.getElementById('activeBots').innerText = sessions.length;
+
+            // Visitor counter (localStorage based)
+            let visitors = parseInt(localStorage.getItem('admin_visitors') || '0');
+            visitors++;
+            localStorage.setItem('admin_visitors', visitors);
+            document.getElementById('visitors').innerText = visitors;
+
+            // Render table
             const tbody = document.getElementById('sessionsBody');
-            if(data.numbers && data.numbers.length > 0) {
-                tbody.innerHTML = '';
-                for(const num of data.numbers) {
-                    const statusRes = await fetch(`/status?number=${num}`);
-                    const statusData = await statusRes.json();
-                    const statsRes = await fetch(`/stats?number=${num}`);
-                    const statsData = await statsRes.json();
-                    
-                    const row = tbody.insertRow();
-                    row.innerHTML = `
-                        <td>${num}</td>
-                        <td><span style="color: #00ff88;">● ONLINE</span></td>
-                        <td>${statusData.uptime || 0}s</td>
-                        <td>${statsData.stats?.messagesReceived || 0}</td>
-                        <td>${statsData.stats?.commandsUsed || 0}</td>
-                        <td class="action-buttons">
-                            <button class="action-btn btn-view" onclick="viewSession('${num}')">View</button>
-                            <button class="action-btn btn-reconnect" onclick="reconnectSession('${num}')">Reconnect</button>
-                            <button class="action-btn btn-disconnect" onclick="disconnectSession('${num}')">Disconnect</button>
-                        </td>
-                    `;
-                }
-            } else {
-                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No active sessions found</td></tr>';
+            if (sessions.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6">No active bots. Pair a device first.</td></tr>';
+                return;
             }
-        } catch(e) {
-            console.error('Error refreshing sessions:', e);
+            tbody.innerHTML = '';
+            for (const num of sessions) {
+                // Fetch status & stats
+                const statusRes = await fetch(`/status?number=${num}`);
+                const statusData = await statusRes.json();
+                const statsRes = await fetch(`/stats?number=${num}`);
+                const statsData = await statsRes.json();
+
+                const row = tbody.insertRow();
+                row.innerHTML = `
+                    <td>${num}</td>
+                    <td><span class="status-online">● ONLINE</span></td>
+                    <td>${statusData.uptime || 0}s</td>
+                    <td>${statsData.stats?.messagesReceived || 0}</td>
+                    <td>${statsData.stats?.commandsUsed || 0}</td>
+                    <td class="action-buttons">
+                        <button class="action-btn btn-view" onclick="viewSession('${num}')">View</button>
+                        <button class="action-btn btn-reconnect" onclick="reconnectSession('${num}')">Reconnect</button>
+                        <button class="action-btn btn-disconnect" onclick="disconnectSession('${num}')">Disconnect</button>
+                    </td>
+                `;
+            }
+        } catch (err) {
+            console.error(err);
+            showToast('Failed to load sessions', 'error');
         }
     }
 
-    async function reconnectAll() {
-        if(confirm('⚠️ WARNING: Reconnect all bots? This will restart all active sessions.')) {
+    // Global actions
+    window.reconnectAll = async () => {
+        if (confirm('⚠️ Reconnect all bots? This will restart all active sessions.')) {
             try {
-                const res = await fetch('/connect-all');
-                const data = await res.json();
-                alert(`Reconnected ${data.total} bots`);
-                setTimeout(refreshSessions, 3000);
-            } catch(e) {
-                alert('Error reconnecting bots');
-            }
+                await fetch('/connect-all');
+                showToast('Reconnecting all bots...', 'info');
+                setTimeout(loadDashboardData, 3000);
+            } catch(e) { showToast('Error', 'error'); }
         }
-    }
-
-    async function disconnectAll() {
-        if(confirm('⚠️ DANGER: Disconnect ALL bots? This will remove all active sessions permanently!')) {
-            const sessions = document.querySelectorAll('#sessionsBody tr');
-            for(const row of sessions) {
-                const number = row.cells[0]?.innerText;
-                if(number && number !== 'No active sessions found') {
-                    await fetch(`/disconnect?number=${number}`);
-                }
-            }
-            alert('All bots disconnected');
-            refreshSessions();
+    };
+    window.disconnectAll = async () => {
+        if (confirm('⚠️ DANGER: Disconnect ALL bots permanently?')) {
+            try {
+                await fetch('/disconnect-all');
+                showToast('All bots disconnected', 'success');
+                loadDashboardData();
+            } catch(e) { showToast('Error', 'error'); }
         }
-    }
+    };
+    window.refreshSessions = () => loadDashboardData();
 
-    function viewSession(number) {
-        window.location.href = `config.html?number=${number}`;
-    }
-
-    async function reconnectSession(number) {
-        if(confirm(`Reconnect bot for ${number}?`)) {
+    // Session actions
+    window.viewSession = (number) => {
+        window.location.href = `/config?number=${number}`;
+    };
+    window.reconnectSession = async (number) => {
+        if (confirm(`Reconnect bot for ${number}?`)) {
             try {
                 await fetch(`/code?number=${number}`);
-                alert('Reconnection initiated!');
-                setTimeout(refreshSessions, 2000);
-            } catch(e) {
-                alert('Error reconnecting bot');
-            }
+                showToast(`Reconnection initiated for ${number}`, 'info');
+                setTimeout(loadDashboardData, 2000);
+            } catch(e) { showToast('Error', 'error'); }
         }
-    }
-
-    async function disconnectSession(number) {
-        if(confirm(`⚠️ Disconnect bot for ${number}?`)) {
+    };
+    window.disconnectSession = async (number) => {
+        if (confirm(`⚠️ Disconnect bot for ${number}?`)) {
             try {
                 await fetch(`/disconnect?number=${number}`);
-                alert('Bot disconnected');
-                refreshSessions();
-            } catch(e) {
-                alert('Error disconnecting bot');
-            }
+                showToast(`Bot ${number} disconnected`, 'success');
+                loadDashboardData();
+            } catch(e) { showToast('Error', 'error'); }
         }
-    }
+    };
 
-    function changeAdminPin() {
-        const newPin = document.getElementById('newPin').value;
-        if(newPin && newPin.length >= 4) {
-            localStorage.setItem('admin_pin', newPin);
-            alert(`Admin PIN changed to: ${newPin}\nPlease remember this PIN!`);
-            document.getElementById('newPin').value = '';
-        } else {
-            alert('Please enter a PIN with at least 4 characters');
+    // Change admin password (store in localStorage)
+    document.getElementById('changePwdBtn').onclick = () => {
+        const newPwd = document.getElementById('newPassword').value.trim();
+        if (newPwd.length < 6) {
+            showToast('Password must be at least 6 characters', 'error');
+            return;
         }
+        ADMIN_CRED.password = newPwd;
+        saveCreds();
+        showToast('Admin password updated successfully', 'success');
+        document.getElementById('newPassword').value = '';
+    };
+
+    // Attach global buttons
+    document.getElementById('reconnectAllBtn').onclick = window.reconnectAll;
+    document.getElementById('disconnectAllBtn').onclick = window.disconnectAll;
+    document.getElementById('refreshSessionsBtn').onclick = window.refreshSessions;
+
+    let refreshInterval = null;
+    function startAutoRefresh() {
+        if (refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(loadDashboardData, 15000);
     }
 
-    function viewAnalytics() {
-        alert(`📊 Analytics\n\nTotal Visitors: ${document.getElementById('totalVisitors').innerText}\nToday: ${document.getElementById('todayVisitors').innerText}\n\nMore detailed analytics coming soon!`);
-    }
-
-    // Track visitor
-    function trackVisitor() {
-        let visitors = localStorage.getItem('total_visitors') || 0;
-        visitors = parseInt(visitors) + 1;
-        localStorage.setItem('total_visitors', visitors);
-        document.getElementById('totalVisitors').innerText = visitors;
-        
-        let today = new Date().toDateString();
-        let todayVisitors = localStorage.getItem(`visitors_${today}`) || 0;
-        todayVisitors = parseInt(todayVisitors) + 1;
-        localStorage.setItem(`visitors_${today}`, todayVisitors);
-        document.getElementById('todayVisitors').innerText = todayVisitors;
-    }
-
-    refreshSessions();
-    setInterval(refreshSessions, 15000);
-    trackVisitor();
+    // Initial load of stored credentials
+    loadStoredCreds();
+    // If already logged in via localStorage? Not implemented, but user must login each session.
 </script>
-
 </body>
-</html>
+    </html>
